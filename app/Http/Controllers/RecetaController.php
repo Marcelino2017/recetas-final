@@ -3,10 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Receta;
+use Illuminate\Auth\Events\Validated;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class RecetaController extends Controller
 {
+    public function __construct(){
+        $this->middleware('auth');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -25,7 +30,9 @@ class RecetaController extends Controller
      */
     public function create()
     {
-        return view('recetas.create');
+        //DB::table('categoria_recetas')->get()->pluck('nombre', 'id')->add();
+        $categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
+        return view('recetas.create', compact('categorias'));
     }
 
     /**
@@ -36,7 +43,20 @@ class RecetaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $data = $request->validate([
+            'titulo'       => 'required | min:6',
+            'categoria'    => 'required',
+            'preparacion'  => 'required',
+            'ingredientes' => 'required',
+            'imagen'       => 'required | image | size:1000',
+        ]);
+
+        DB::table('recetas')->insert([
+            'titulo' => $data['titulo'],
+        ]);
+        
+        //redireccion
+        return redirect()->action('RecetaController@index');
     }
 
     /**
