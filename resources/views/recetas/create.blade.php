@@ -10,10 +10,10 @@
 
 @section('content')
 <h2 class="text-center mb-5">Crear nuevas recetas</h2>
-    {{ $categorias }}
     <div class="row justify-content-center mt-5" >
         <div class="col-md-8">
-            <form method="POST" action=" {{ route('recetas.store') }} " novalidate>
+            {{-- para subir file o imagenes tenemos que poner en el form  enctype="multipart/form-data"--}}
+            <form method="POST" action=" {{ route('recetas.store') }} " enctype="multipart/form-data" novalidate>
                 @csrf
                 <div class="form-group">
                     <label for="titulo">Titulo Receta</label>
@@ -43,9 +43,9 @@
                             <option value="">Seleccione...</option>
                         @foreach ($categorias as $id => $categoria)
                             <option 
-                                value="{{ $id }}"
-                                {{ old('categoria') == $id ? 'selected':'' }}
-                                > {{ $categoria }} </option>
+                                value="{{ $categoria->id }}"
+                                {{ old('categoria') == $categoria->id ? 'selected':'' }}
+                                > {{ $categoria->nombre }} </option>
                         @endforeach 
                     </select>
                 </div>
@@ -71,7 +71,7 @@
                 </div>
                 <div class="form-group mt-3">
                     <label for="ingredientes">Ingredientes</label>
-                    <input id="ingredientes" type="hidden" name="ingredientes" value="{{ old('ingredientes') }}"  >
+                    <input id="ingredientes" type="hidden" name="ingredientes"  value="{{ old('ingredientes') }}"  >
                     <trix-editor 
                         input="ingredientes"
                         class="@error('ingredientes') 
