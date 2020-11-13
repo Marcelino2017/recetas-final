@@ -12,8 +12,9 @@ use Intervention\Image\Facades\Image;
 
 class RecetaController extends Controller
 {
+    //para que se ingrse solo los registrado
     public function __construct(){
-        $this->middleware('auth');
+        $this->middleware('auth', ['except'=>'show']);
     }
     /**
      * Display a listing of the resource.
@@ -96,12 +97,17 @@ class RecetaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Receta  $receta
+     * @param  \App\Receta  $receta                 //obtenre las rutas de la imagen
+            $ruta_imagen = $request['imagen']->store('uploads-recetas', 'public');
+
+            //Resize la imagen
+            $img = Image::make(public_path("storage/{$ruta_imagen}"))->fit(1000,550);
      * @return \Illuminate\Http\Response
      */
     public function edit(Receta $receta)
     {
-        //
+        $categorias = CategoriaReceta::all('id', 'nombre');
+        return view('recetas.edit', compact('receta','categorias'));
     }
 
     /**
@@ -113,7 +119,38 @@ class RecetaController extends Controller
      */
     public function update(Request $request, Receta $receta)
     {
-        //
+        //revisa el Policy
+        $this->authorize('update', $receta);
+
+        $data = $request->validate([
+            'titulo'       => 'required | min:6',
+            'preparacion'  => 'required',
+            'ingredientes' => 'required',
+            'categoria'    => 'required',
+        ]);
+
+        //asignar valor
+        $receta->titulo = $data['titulo'];
+        $receta->preparacion = $data['preparacion'];
+        $receta->ingredientes = $data['ingredientes'];
+        $receta->categoria_id = $data['categoria'];        
+
+        //si el usuario sube una nueva imagen
+        if(request('imagen')){
+            //obtenre las rutas de la imagen
+            $ruta_imagen = $request['imagen']->store('uploads-recetas', 'public');
+
+            //Resize la imagen
+            $img = Image::make(public_path("storage/{$ruta_imagen}"))->fit(1000,550);
+            
+            $img->save();
+
+            $receta->imagen = $ruta_imagen;
+
+        }
+
+        $receta->save();
+        return redirect()->action('RecetaController@index');
     }
 
     /**
@@ -124,6 +161,10 @@ class RecetaController extends Controller
      */
     public function destroy(Receta $receta)
     {
-        //
+        //revisa el Policy
+       // $this->authorize('update', $receta);
+       
+        $receta->delete();
+        return redirect()->action('RecetaController@index');
     }
 }

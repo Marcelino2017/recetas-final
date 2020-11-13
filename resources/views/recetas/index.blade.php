@@ -22,9 +22,14 @@
                     <td>{{ $receta->titulo }}</td>
                     <td>{{ $receta->categoria->nombre }}</td>
                     <td>
-                        <a href="" class="btn btn-danger">Eliminar</a>
-                        <a href="" class="btn btn-dark mr-1">Editar</a>
-                        <a href="" class="btn btn-success mr-1">Ver</a>
+                        <form action="{{ route('recetas.destroy', ['receta' => $receta->id]) }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                        
+                            <input type="submit" href="" class="btn btn-danger d-block w-100 mb-2" value="Eliminar &times;">
+                        </form>
+                        <a href="{{ route('recetas.edit', ['receta'=>$receta->id]) }}" class="btn btn-dark mr-1 d-block mb-2">Editar</a>
+                        <a href="{{ route('recetas.show', ['receta'=>$receta->id]) }}" class="btn btn-success mr-1 d-block mb-2">Ver</a>
                     </td>
 
                 </tr>
