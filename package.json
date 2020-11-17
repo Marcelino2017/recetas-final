@@ -25,6 +25,7 @@
     },
     "name": "recetas-final",
     "dependencies": {
-        "moment": "^2.29.1"
+        "moment": "^2.29.1",
+        "vue-sweetalert2": "^4.1.1"
     }
 }
