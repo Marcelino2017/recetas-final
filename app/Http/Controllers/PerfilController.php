@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Perfil;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class PerfilController extends Controller
 {
@@ -57,7 +58,7 @@ class PerfilController extends Controller
      */
     public function edit(Perfil $perfil)
     {
-        //
+        return view('perfiles.edit', compact('perfil'));
     }
 
     /**
@@ -69,7 +70,49 @@ class PerfilController extends Controller
      */
     public function update(Request $request, Perfil $perfil)
     {
-        //
+        
+        //Validar la entrada de los datos
+        $data = $request->validate([
+            'nombre' => 'required',
+            'url' => 'required',
+            'biografia' => 'required'
+        ]);
+
+        //si un usuario sube una imagen
+        if ($request['imagen']) 
+        {
+            //obtenre las rutas de la imagen
+            $ruta_imagen = $request['imagen']->store('uploads-recetas', 'public');
+
+            //Resize la imagen
+            $img = Image::make(public_path("storage/{$ruta_imagen}"))->fit(600,600);
+            $img->save();
+
+            //crear un arreglode imagen
+            $array_imagen = ['imagen' => $ruta_imagen] ;
+        }
+        
+        //Asignar nobre y URl
+        auth()->user()->url = $data['url'];
+        auth()->user()->name = $data['nombre'];
+        auth()->user()->save();
+
+        //eliminar url y name de $date
+        unset($data['url']);
+        unset($data['nombre']);
+        //return $data;
+
+
+
+        //Guardar información
+        //Asignar Biografia e imagen(array_merge Combina dos o más arrays)
+        auth()->user()->perfil()->update(array_merge(
+            $data, 
+            $array_imagen ?? [], //si no existe array_imagen pasa un arreglo vacio
+        ));
+
+        //si el usurio sube una imagen
+        return redirect()->action('RecetaController@index');
     }
 
     /**

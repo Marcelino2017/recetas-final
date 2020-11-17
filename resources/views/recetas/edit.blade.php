@@ -89,7 +89,7 @@
                     <input id="imagen" 
                         type="file"
                         class="form-control
-                        @error('ingredientes') 
+                        @error('imagen') 
                          is-invalid
                         @enderror" 
                         name="imagen">
