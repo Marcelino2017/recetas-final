@@ -97,11 +97,7 @@ class RecetaController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Receta  $receta                 //obtenre las rutas de la imagen
-            $ruta_imagen = $request['imagen']->store('uploads-recetas', 'public');
-
-            //Resize la imagen
-            $img = Image::make(public_path("storage/{$ruta_imagen}"))->fit(1000,550);
+     * @param  \App\Receta  $receta       
      * @return \Illuminate\Http\Response
      */
     public function edit(Receta $receta)
@@ -123,7 +119,7 @@ class RecetaController extends Controller
         $this->authorize('update', $receta);
 
         $data = $request->validate([
-            'titulo'       => 'required | min:6',
+            'titulo'       => 'required | min:3',
             'preparacion'  => 'required',
             'ingredientes' => 'required',
             'categoria'    => 'required',
@@ -161,9 +157,10 @@ class RecetaController extends Controller
      */
     public function destroy(Receta $receta)
     {
+        
         //revisa el Policy
-       // $this->authorize('update', $receta);
-       
+        $this->authorize('delete', $receta);
+    
         $receta->delete();
         return redirect()->action('RecetaController@index');
     }
