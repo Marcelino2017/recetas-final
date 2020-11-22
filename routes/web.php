@@ -27,6 +27,10 @@ Route::get('/recetas/{receta}/edit', 'RecetaController@edit')->name('recetas.edi
 Route::put('/recetas/{receta}', 'RecetaController@update')->name('recetas.update');
 Route::delete('/recetas/{receta}', 'RecetaController@destroy')->name('recetas.destroy');
 
+
+//es lo mismo que alo de arriba
+//Route::resource('recetas', 'RecetaController');
+
 //Rutas de Perfiles
 Route::get('perfiles/{perfil}', 'PerfilController@show')->name('perfiles.show');
 Route::get('perfiles/{perfil}/edit', 'PerfilController@edit')->name('perfiles.edit');

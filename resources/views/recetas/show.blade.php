@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
- <article class="contenido-receta">
+ <article class="contenido-receta container">
      <h1 class="text-center mb-4">{{ $receta->titulo }}</h1>
      <div class="receta-meta">
          <div class="imagen-receta">
@@ -31,7 +31,7 @@
              {!! $receta->ingredientes !!}
          </div>
          <div class="preparacion">
-            <h2 class="my-3 text-primary" >Ingredientes</h2>
+            <h2 class="my-3 text-primary" >Preparación</h2>
             {{-- Imprime codigo html --}}
             {!! $receta->preparacion !!}
         </div>

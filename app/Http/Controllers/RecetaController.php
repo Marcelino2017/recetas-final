@@ -14,7 +14,7 @@ class RecetaController extends Controller
 {
     //para que se ingrse solo los registrado
     public function __construct(){
-        $this->middleware('auth', ['except'=>'show']);
+        $this->middleware('auth', ['except' => 'show']);
     }
     /**
      * Display a listing of the resource.
@@ -25,8 +25,14 @@ class RecetaController extends Controller
     {
        // auth()->user()->recetas->dd();
        // Auth::user()->recetas->dd();
-        $recetas = auth()->user()->recetas;
-        return view('recetas.index', compact('recetas'));
+        // $usuario = auth()->user();
+        // $recetas = auth()->user()->recetas;
+        $usuario = auth()->user()->id;
+
+        //Rectas con paginacion
+        $recetas = Receta::where('user_id', $usuario)->paginate(10);
+
+        return view('recetas.index', compact('recetas', 'usuario'));
     }
 
     /**
@@ -39,7 +45,7 @@ class RecetaController extends Controller
         //DB::table('categoria_recetas')->get()->pluck('nombre', 'id')->add();
         //Obtener categoria(sin modelo)
         //$categorias = DB::table('categoria_recetas')->get()->pluck('nombre', 'id');
-
+    
         //con modelo
         $categorias = CategoriaReceta::all('id', 'nombre');
 
@@ -91,6 +97,7 @@ class RecetaController extends Controller
      */
     public function show(Receta $receta)
     {
+        
         return view('recetas.show', compact('receta')) ;
     }
 
@@ -102,7 +109,11 @@ class RecetaController extends Controller
      */
     public function edit(Receta $receta)
     {
+        //revisar policy
+       // $this->authorize('view', $receta);
+
         $categorias = CategoriaReceta::all('id', 'nombre');
+       // return $receta;
         return view('recetas.edit', compact('receta','categorias'));
     }
 
@@ -116,7 +127,7 @@ class RecetaController extends Controller
     public function update(Request $request, Receta $receta)
     {
         //revisa el Policy
-        $this->authorize('update', $receta);
+       // $this->authorize('update', $receta);
 
         $data = $request->validate([
             'titulo'       => 'required | min:3',

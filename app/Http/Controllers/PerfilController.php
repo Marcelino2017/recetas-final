@@ -3,11 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Perfil;
+use App\Receta;
 use Illuminate\Http\Request;
 use Intervention\Image\Facades\Image;
 
 class PerfilController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth', ['except' => 'show']);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -47,7 +52,10 @@ class PerfilController extends Controller
      */
     public function show(Perfil $perfil)
     {
-        return view('perfiles.show', compact('perfil'));
+        //Obtener las recetas con paginas
+        $recetas = Receta::where('user_id', $perfil->user_id)->paginate(10);
+
+        return view('perfiles.show', compact('perfil', 'recetas'));
     }
 
     /**
@@ -58,6 +66,8 @@ class PerfilController extends Controller
      */
     public function edit(Perfil $perfil)
     {
+        //bloquear una vista paa que no la vean sin estar logueado
+        $this->authorize('view', $perfil);
         return view('perfiles.edit', compact('perfil'));
     }
 
@@ -70,6 +80,7 @@ class PerfilController extends Controller
      */
     public function update(Request $request, Perfil $perfil)
     {
+        $this->authorize('update', $perfil);
         
         //Validar la entrada de los datos
         $data = $request->validate([
@@ -82,7 +93,7 @@ class PerfilController extends Controller
         if ($request['imagen']) 
         {
             //obtenre las rutas de la imagen
-            $ruta_imagen = $request['imagen']->store('uploads-recetas', 'public');
+            $ruta_imagen = $request['imagen']->store('uploads-perfiles', 'public');
 
             //Resize la imagen
             $img = Image::make(public_path("storage/{$ruta_imagen}"))->fit(600,600);
@@ -113,16 +124,5 @@ class PerfilController extends Controller
 
         //si el usurio sube una imagen
         return redirect()->action('RecetaController@index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Perfil  $perfil
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Perfil $perfil)
-    {
-        //
     }
 }

@@ -21,7 +21,7 @@ class UsuarioSeeder extends Seeder
             'url' => 'https://educadoronline.club',
         ]);
 
-        $user->perfil()->create();
+        
 
         $user2 = User::create([
             'name' => 'Juan',
@@ -30,6 +30,5 @@ class UsuarioSeeder extends Seeder
             'url' => 'https://google.com',
         ]);
 
-        $user2->perfil()->create();
     }
 }

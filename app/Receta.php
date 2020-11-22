@@ -8,7 +8,7 @@ class Receta extends Model
 {
     //campo que se agregan
     protected $fillable = [
-        'titulo', 'praparacion', 'imagen', 'categoria_id'
+        'titulo', 'praparacion', 'ingredientes','imagen', 'categoria_id'
     ];
 
     //Obtine la categoria  de la recetas via FK
@@ -16,9 +16,10 @@ class Receta extends Model
     {
         return $this->belongsTo(CategoriaReceta::class);
     }
+    // Obtiene la información del usuario via FK
     public function autor()
     {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'user_id'); // FK de esta tabla
     }
     
 }
