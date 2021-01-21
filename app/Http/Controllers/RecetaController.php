@@ -14,7 +14,7 @@ class RecetaController extends Controller
 {
     //para que se ingrse solo los registrado
     public function __construct(){
-        $this->middleware('auth', ['except' => 'show']);
+        $this->middleware('auth', ['except' => 'show', 'search']);
     }
     /**
      * Display a listing of the resource.
@@ -179,5 +179,17 @@ class RecetaController extends Controller
     
         $receta->delete();
         return redirect()->action('RecetaController@index');
+    } 
+    
+    public function search(Request $request)
+    {
+        //$busqueda = $request['buscar'];
+        $busqueda = $request->get('buscar');
+
+        $recetas = Receta::where('titulo', 'LIKE', '%'. $busqueda . '%')->paginate(1);
+        //agrega algo alquery string (url)
+        $recetas->appends(['buscar' => $busqueda]);
+       
+        return view('busquedas.show', compact('recetas', 'busqueda'));
     }
 }

@@ -1918,6 +1918,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['recetaId'],
   methods: {
@@ -69504,8 +69505,8 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("input", {
-    staticClass: "btn btn-danger d-block w-100 mb-2",
-    attrs: { type: "submit", name: "eliminarReceta", value: "Eliminar x" },
+    staticClass: "btn btn-danger d-block mb-2  ml-2 btn-mio",
+    attrs: { type: "submit", name: "eliminarReceta", value: "X" },
     on: { click: _vm.eliminarReceta }
   })
 }
@@ -81863,6 +81864,7 @@ jQuery(document).ready(function () {
     margin: 10,
     loop: true,
     autoplay: true,
+    nav: true,
     autoplayHoverPause: true,
     responsive: {
       0: {

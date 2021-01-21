@@ -1,9 +1,10 @@
 <template>
+
     <input 
         type="submit"
-        class="btn btn-danger d-block w-100 mb-2"
+        class="btn btn-danger d-block mb-2  mr-2 btn-mio"
         name="eliminarReceta"
-        value="Eliminar x"
+        value="X"
         @click="eliminarReceta">
         
 </template>

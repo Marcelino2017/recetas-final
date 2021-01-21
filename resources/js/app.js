@@ -57,6 +57,7 @@ jQuery(document).ready(function() {
         margin: 10,
         loop: true,
         autoplay: true,
+        nav: true,
         autoplayHoverPause: true,
         responsive: {
             0: {

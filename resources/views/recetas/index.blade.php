@@ -11,7 +11,7 @@
         <table class="table">
             <thead class="bg-primary text-light">
                 <tr>
-                    <th scope="col">Titulo</th>
+                    <th class="align-self-center" scope="col">Titulo</th>
                     <th scope="col">Categoria</th>
                     <th scope="col">Acciones</th>
                 </tr>
@@ -19,13 +19,19 @@
             <tbody>
                 @foreach($recetas as $receta)
                 <tr>
-                    <td>{{ $receta->titulo }}</td>
+                    <td class="user-select-auto">{{ $receta->titulo }}</td>
                     <td>{{ $receta->categoria->nombre }}</td>
-                    <td>
-                        <eliminar-receta receta-id = {{ $receta->id }}>                          
-                        </eliminar-receta>
-                        <a href="{{ route('recetas.edit', ['receta'=>$receta->id]) }}" class="btn btn-dark mr-1 d-block mb-2">Editar</a>
-                        <a href="{{ route('recetas.show', ['receta'=>$receta->id]) }}" class="btn btn-success mr-1 d-block mb-2">Ver</a>
+                    <td class="user-select-auto">
+                        <div class="d-flex bd-highlight">
+                            <eliminar-receta receta-id = {{ $receta->id }}>                          
+                            </eliminar-receta>
+                            <a href="{{ route('recetas.edit', ['receta'=>$receta->id]) }}" class="btn btn-dark ml-2 d-block mb-2">
+                                <svg class="icono" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z"></path></svg>
+                            </a>
+                            <a href="{{ route('recetas.show', ['receta'=>$receta->id]) }}" class="btn btn-success ml-2 d-block mb-2">
+                                <svg class="icono" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path><path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path></svg>
+                            </a>
+                        </div>
                     </td>
 
                 </tr>
